@@ -1,0 +1,159 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 3.2 Final//EN">
+<html>
+<head>
+<!--
+     $Id: package.html,v 1.6 2003/07/13 16:13:35 ljnelson Exp $
+
+     Copyright (c) 2003 Laird Jarrett Nelson.
+
+     Permission is hereby granted, free of charge, to any person obtaining a
+     copy of this software and associated documentation files (the "Software"),
+     to deal in the Software without restriction, including without limitation
+     the rights to use, copy, modify, merge, publish, distribute, sublicense
+     and/or sell copies of the Software, and to permit persons to whom the
+     Software is furnished to do so, subject to the following conditions:
+     
+     The above copyright notice and this permission notice shall be included in
+     all copies or substantial portions of the Software.
+     
+     THIS SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+     IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+     FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT.  IN NO EVENT SHALL
+     THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+     LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING
+     FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER
+     DEALINGS IN THE SOFTWARE.
+
+     The original copy of this license is available at
+     http://www.opensource.org/license/mit-license.html.
+-->
+<title>sfutils.frs</title>
+</head>
+<body bgcolor="white">
+
+<p>Provides classes that model the logical objects involved in the <a
+href="http://sourceforge.net/">SourceForge</a> file release process.  A full and
+detailed discussion of the process can be found in the <a
+href="http://sourceforge.net/docman/display_doc.php?docid=6445&group_id=1">Guide
+to the SourceForge.net File Release System (FRS)</a>, but a quick summary is
+given below.</p>
+
+<p>I heartily recommend that you explore the SourceForge File Release System
+user interface extensively before you attempt to use these classes so that you
+fully understand what is going on behind the scenes.  The user interface is not
+particularly straightforward, and the structure of the elements involved is not
+apparent to all users.</p>
+
+<h3>SourceForge File Release System: Structural Overview</h3>
+
+<img src="doc-files/frs.gif" align="left"/>
+
+<p>This is a brief summary of the structure of the elements involved in
+releasing a file or group of files to SourceForge.  A UML representation of this
+structure--not of the Java objects in this package--is visible to the left (for
+those browsers which support the display of images).</p>
+
+<p>The SourceForge <a href="http://sourceforge.net/">site</a> is a vast and
+sprawling network of <b><i>projects</i></b>, which are spaces carved out by
+their owners for some combination of development work, web hosting and project
+management functions.  Every project has an <b><i>administrator</i></b> who is
+responsible for organizing the project and maintaining the users, files,
+permissions, databases and other artifacts associated with it.  Projects are
+modeled by the {@link sfutils.Project} class.  Their administrators are
+modeled by the {@link sfutils.Administrator} class.</p>
+
+<p>Each project is subdivided into one or more <b><i>packages</i></b>, which
+really don't show up in any meaningful way until a project administrator (or
+some other authorized project member) decides to release files (in fact, that's
+the only point at which a project member can define new packages).  A package at
+the most abstract level is simply a way to group meaningful work within a
+project.  More pragmatically, it is a way of grouping groups of released files
+together in a meaningful way.  Packages may be old, outdated, private or
+experimental, in which case they are <b><i>hidden</i></b>, or they may be
+suitable for public consumption, in which case they are <b><i>active</i></b>.
+Packages are modeled by the {@link sfutils.frs.Package} class.</p>
+
+<p>Finally, a package may have zero or more <b><i>file releases</i></b>
+associated with it.  A file release is the basic unit of public currency on
+SourceForge; it is what a project produces, and what that project's members
+intend for the public to use and improve.  A file release may be
+<b><i>hidden</i></b> or <b><i>active</i></b>, and has a <b><i>release
+date</i></b>.  A file release will usually contain only one file--usually in
+some archive format--but may contain many.  Each file in the file release must
+be assigned a <b><i>file type</i></b> and a
+<b><i>target architecture</i></b>.  Additionally, the SourceForge user interface
+implies that a file <i>within</i> a file release may also have a release date.
+However, actually <i>setting</i> such a release date doesn't seem to have any
+effect on the SourceForge file release system.  File releases are modeled by the
+{@link sfutils.frs.FileRelease} class, and files contained in a file release are
+modeled by the {@link sfutils.frs.FileSpecification} class.</p>
+
+<p>A file release is always associated with a <b><i>change log</i></b> and a set
+of <b><i>release notes</i></b>.  The change log and the release notes together
+describe the file release.</p>
+
+<p>When you make a file release, you can choose to notify anyone who is
+monitoring your project that the release has happened.  SourceForge's internal
+mechanisms take care of the gory details and ensures that these users are
+notified by email.</p>
+
+<p>File releases may be made for any reason, at any time, by any member of the
+project who has the required permissions.  A file release on SourceForge is
+always intended for public consumption, and should be documented well enough
+that prospective end users can figure out how to use it easily.  However, take
+care when making a file release as the intent of the good folks at SourceForge
+is that all file releases on their system live forever.  <strong>There is no
+accessible mechanism on the SourceForge site to remove file releases.</strong>
+The best you can do is to set a file release's visibility status to
+<code>Hidden</code>.  Usually you'll want to hide its enclosing package as well,
+but note that you cannot hide a package unless all the file releases it contains
+are hidden as well.</p>
+
+<h3>Design Notes</h3>
+
+<p>I ran into some issues interfacing to the SourceForge File Release System web
+interface programmatically.  Some of these issues are detailed below.
+
+<ul>
+
+<li>It looks like the file-within-a-file-release concept predates the file
+release concept.  Both files-in-a-file-release and file releases have release
+dates, but a file-within-a-file-release's release date
+does not actually show up in the "Files" section of a project.</li>
+
+<li>It is possible to confuse the File Release System by playing around with the
+visibility statuses of both file releases and packages.  This package attempts
+to prevent such confusion.</li>
+
+<li>File releases, in general, are not to be undertaken lightly.  A file release
+will be available to the public until a project administrator hides it
+explicitly.  Consequently, test your file releases with care.</li>
+
+<li>There is no enforced relationship on SourceForge between a file release and
+any CVS tags that logically relate to it.  This package does not establish this
+kind of link either.</li>
+
+<li>Certain classes in the <code>sfutils</code> package (like {@link
+sfutils.Project}, {@link sfutils.Administrator}, etc.) may be expanded
+at a later date to provide a more complete model of the SourceForge site
+structure.  For now, they contain only what is necessary to supply to the web
+interface.</li>
+
+</ul>
+
+</p>
+
+<!--
+
+<h2>Package Specification</h2>
+
+<p>This is where the package's formal specification, whatever that is, goes.</p>
+
+<h2>Related Documentation</h2>
+
+<p>This is where related documentation goes.</p>
+
+-->
+<br clear="all"/>
+</body>
+</html>

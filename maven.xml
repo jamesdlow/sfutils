@@ -1,0 +1,21 @@
+<project default="jar:jar"
+  xmlns:ant="jelly:ant"
+  xmlns:j="jelly:core">
+
+  <!-- This is really, really, really, really, really, really, really ugly. -->
+  <preGoal name="xdoc:transform">
+    <ant:copy file="${pom.getPluginContext('maven-xdoc-plugin').getVariable('maven.docs.src')}/release-notes.in"
+              tofile="${pom.getPluginContext('maven-xdoc-plugin').getVariable('maven.docs.src')}/release-notes.xml"
+              overwrite="true">
+      <ant:filterset>
+        <ant:filter token="pom.version" value="${pom.currentVersion}"/>
+      </ant:filterset>
+    </ant:copy>
+  </preGoal>
+
+  <postGoal name="xdoc:transform">
+    <!-- Somehow release-notes.in gets into the final directory.  No idea how. -->
+    <ant:delete file="${pom.getPluginContext('maven-xdoc-plugin').getVariable('maven.docs.dest')}/release-notes.in"/>
+  </postGoal>
+
+</project>

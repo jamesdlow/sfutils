@@ -1,0 +1,143 @@
+<?xml version="1.0" encoding="ISO-8859-1"?>
+<project><!-- $Id: project.xml,v 1.22.2.2.2.1 2004/03/12 15:19:59 ljnelson Exp $ -->
+  <pomVersion>3</pomVersion>
+  <groupId>sfutils</groupId>
+  <id>sfutils</id>
+  <name>SourceForge Utilities</name>
+  <currentVersion>1.01RC1</currentVersion>
+  <organization>
+    <name>Laird Nelson</name>
+    <url>mailto:ljnelson94@alumni.amherst.edu</url>
+  </organization>
+  <inceptionYear>2003</inceptionYear>
+  <!-- The package element value below is a hack to make javadoc:generate work. -->
+  <package>sfutils.*,org.apache.tools.ant.taskdefs.optional.sourceforge</package>
+  <packageGroups>
+    <packageGroup>
+      <title>SourceForge: Core Structure</title>
+      <packages>sfutils</packages>
+    </packageGroup>
+    <packageGroup>
+      <title>File Release System: Core Structure</title>
+      <packages>sfutils.frs,sfutils.frs.web</packages>
+    </packageGroup>
+    <packageGroup>
+      <title>File Release System: Ant Task</title>
+      <packages>org.apache.tools.ant.taskdefs.optional.sourceforge</packages>
+    </packageGroup>
+  </packageGroups>
+  <logo>/logo.png</logo>
+  <description>A collection of utilities for working programmatically with SourceForge.</description>
+  <url>http://sourceforge.net/projects/sfutils/</url>
+  <issueTrackingUrl>http://sourceforge.net/tracker/?group_id=82930&amp;atid=567733</issueTrackingUrl>
+  <siteAddress>shell.sourceforge.net</siteAddress>
+  <siteDirectory>/home/groups/s/sf/sfutils/htdocs</siteDirectory>
+  <repository>
+    <connection>scm:cvs:pserver:anonymous@cvs.sourceforge.net:/cvsroot/sfutils:sfutils</connection>
+    <url>http://cvs.sourceforge.net/cgi-bin/viewcvs.cgi/sfutils/</url>
+  </repository>
+  <mailingLists>
+    <mailingList>
+      <name>sfutils-user</name>
+      <subscribe>sfutils-user-subscribe@lists.sourceforge.net</subscribe>
+      <unsubscribe>sfutils-user-unsubscribe@lists.sourceforge.net</unsubscribe>
+      <archive>http://sourceforge.net/mailarchive/forum.php?forum_id=33823</archive>
+    </mailingList>
+  </mailingLists>  
+  <developers>
+    <developer>
+      <name>Laird Nelson</name>
+      <id>ljnelson</id>
+      <email>ljnelson94@alumni.amherst.edu</email>
+      <organization/>
+      <roles>
+        <role>Project Administrator</role>
+        <role>Project Architect</role>
+        <role>Java Developer</role>
+      </roles>
+    </developer>
+  </developers>
+  <dependencies>
+    <dependency>
+      <groupId>xerces</groupId>
+      <artifactId>xerces</artifactId>
+      <version>2.4.0</version>
+      <url>http://xml.apache.org/xerces/</url>
+    </dependency>
+    <dependency>
+      <groupId>xerces</groupId>
+      <artifactId>xmlParserAPIs</artifactId>
+      <version>2.2.1</version>
+      <url>http://xml.apache.org/xerces/</url>
+    </dependency>
+    <dependency>
+      <groupId>ant</groupId>
+      <artifactId>ant</artifactId>
+      <version>1.5.3-1</version>
+      <url>http://ant.apache.org/</url>
+    </dependency>
+    <dependency>
+      <groupId>ant</groupId>
+      <artifactId>ant-optional</artifactId>
+      <version>1.5.3-1</version>
+      <url>http://ant.apache.org/</url>
+    </dependency>
+    <dependency>
+      <groupId>nekohtml</groupId>
+      <artifactId>nekohtml</artifactId>
+      <version>0.7.6</version>
+      <url>http://www.apache.org/~andyc/neko/doc/html/</url>
+    </dependency>
+    <dependency>
+      <groupId>rhino</groupId>
+      <artifactId>js</artifactId>
+      <version>1.5R4-RC3</version>
+      <url>http://www.mozilla.org/rhino/</url>
+    </dependency>
+    <dependency>
+      <groupId>httpunit</groupId>
+      <artifactId>httpunit</artifactId>
+      <version>1.5.3</version>
+      <url>http://httpunit.sourceforge.net/</url>
+    </dependency>
+    <dependency>
+      <groupId>junit</groupId>
+      <artifactId>junit</artifactId>
+      <version>3.8.1</version>
+      <url>http://www.junit.org/</url>
+    </dependency>
+  </dependencies>
+  <build>
+    <nagEmailAddress>ljnelson94@alumni.amherst.edu</nagEmailAddress>
+    <sourceDirectory>src/java</sourceDirectory>
+    <unitTestSourceDirectory>src/test</unitTestSourceDirectory>
+    <unitTest>
+      <includes>
+        <include>**/TestCase*.java</include>
+      </includes>
+    </unitTest>
+    <resources/>
+  </build>
+  <reports>
+<!--
+    I've commented out the jdepend plugin largely because it spits out a lot of
+    information but ultimately isn't very helpful.
+-->
+<!--
+    <report>maven-jdepend-plugin</report>
+-->
+    <report>maven-checkstyle-plugin</report>
+    <report>maven-changes-plugin</report>
+    <report>maven-developer-activity-plugin</report>
+    <report>maven-changelog-plugin</report>
+    <report>maven-file-activity-plugin</report>
+    <report>maven-license-plugin</report>
+    <report>maven-javadoc-plugin</report>
+    <report>maven-jxr-plugin</report>
+    <report>maven-junit-report-plugin</report>
+<!--
+    <report>maven-linkcheck-plugin</report>
+-->
+    <report>maven-tasklist-plugin</report>
+  </reports>
+</project>
